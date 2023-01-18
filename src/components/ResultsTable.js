@@ -3,17 +3,17 @@ import fetch from 'node-fetch';
 
 import TableBody from './TableBody';
 import TableHead from './TableHead';
-
-
-const targetUrl = 'https://api.sportradar.us/soccer/trial/v4/en/seasons/sr:season:77453/schedules.json?api_key=qjpvxc8hvtwyutz2vsk95qrt';
+import SeasonsDropdown from './SeasonsDropdwon';
 
 
 function ResultsTable() {
 
     const [allCompetitions, setAllCompetitions] = useState([]);
 
+    const [seasonId, setSeasonId] = useState(['sr:season:77453'])
+
     const getData = () => {
-        fetch(`http://localhost:3003/${targetUrl}`)
+        fetch(`http://localhost:3003/https://api.sportradar.us/soccer/trial/v4/en/seasons/${seasonId}/schedules.json?api_key=qjpvxc8hvtwyutz2vsk95qrt`)
 
             .then(response => response.json())
             .then(data => {
@@ -27,10 +27,15 @@ function ResultsTable() {
 
     useEffect(() => {
         getData();
-    }, [])
+
+    }, [seasonId])
+
+
+
 
     return (
         <div className="App">
+            <SeasonsDropdown setSeasonId={setSeasonId} />
             <table>
                 <TableHead />
                 <TableBody competitions={allCompetitions} />
