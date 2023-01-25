@@ -1,4 +1,11 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+
+
+import '../css/TableBody.css'
+
+
+
 
 let infosToDisplay = [];
 
@@ -31,11 +38,25 @@ const teamAwayCellBackgroundColor = (competition) => {
 }
 
 
-function TableBody({ competitions }) {
-    infosToDisplay = competitions.map(competition => {
 
+function TableBody({ competitions }) {
+
+    let history = useHistory();
+
+    function handleClick(id) {
+        history.push(`/sport_event/${id}`);
+        window.location.reload()
+    }
+
+
+    infosToDisplay = competitions.map(competition => {
         return (
-            <tr key={competition.sport_event.id}>
+            <tr
+                key={competition.sport_event.id}
+                onClick={() => handleClick(competition.sport_event.id)}
+                className='row-height'
+            >
+
                 {/* display team names */}
                 <td style={{ backgroundColor: teamHomeCellBackgroundColor(competition) }}>
                     {competition.sport_event.competitors[0].name}
@@ -47,7 +68,6 @@ function TableBody({ competitions }) {
                 {/* display result */}
                 {/* home_score : away_score */}
                 {competition.sport_event_status.match_status === 'ended' ? <td> {competition.sport_event_status.home_score} : {competition.sport_event_status.away_score}</td> : <td>-:-</td>}
-                {/* <td> {competition.sport_event_status.home_score} : {competition.sport_event_status.away_score}</td> */}
 
                 {/* display date */}
                 <td>
@@ -59,14 +79,19 @@ function TableBody({ competitions }) {
 
                 {
                     competition.sport_event_status.period_scores ?
-                        <td>{competition.sport_event_status.period_scores.map(score => {
 
-                            return (
-                                <p>{score.home_score} : {score.away_score}</p>
-                            )
-                        })}</td> :
+                        <td>
+                            <ul>
+                                <li>
+                                    1st half: {competition.sport_event_status.period_scores[0].home_score} : {competition.sport_event_status.period_scores[0].away_score}
+                                </li>
+                                <li>
+                                    2nd half: {competition.sport_event_status.period_scores[1].home_score} : {competition.sport_event_status.period_scores[1].away_score}
+                                </li>
 
-                        <td>-:-</td>
+                            </ul>
+                        </td>
+                        : <td>-:-</td>
 
                 }
                 {/* display stadium name */}
@@ -78,7 +103,6 @@ function TableBody({ competitions }) {
             </tr >
         )
     })
-
     return (
         <tbody>
             {infosToDisplay}

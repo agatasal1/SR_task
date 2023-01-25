@@ -3,7 +3,11 @@ import fetch from 'node-fetch';
 
 import TableBody from './TableBody';
 import TableHead from './TableHead';
-import SeasonsDropdown from './SeasonsDropdwon';
+import SeasonsDropdown from './SeasonsDropdown';
+import '../css/Table.css'
+
+
+import { Table } from 'react-bootstrap';
 
 
 function ResultsTable() {
@@ -14,7 +18,6 @@ function ResultsTable() {
 
     const getData = () => {
         fetch(`http://localhost:3003/https://api.sportradar.us/soccer/trial/v4/en/seasons/${seasonId}/schedules.json?api_key=qjpvxc8hvtwyutz2vsk95qrt`)
-
             .then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -31,16 +34,19 @@ function ResultsTable() {
     }, [seasonId])
 
 
-
+    if (allCompetitions.length === 0) {
+        return
+    }
 
     return (
-        <div className="App">
+        <div className="table-responsive table-max-width">
+            <h1 className='title'>Soccer - top league</h1>
             <SeasonsDropdown setSeasonId={setSeasonId} />
-            <table>
+            <Table bordered hover size="sm" variant="dark" borderless>
                 <TableHead />
                 <TableBody competitions={allCompetitions} />
-            </table>
-        </div>
+            </Table>
+        </div >
     );
 }
 

@@ -1,16 +1,24 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
+import { createBrowserHistory } from 'history';
 
 import ResultsTable from "./components/ResultsTable";
+import MatchSubpage from "./components/MatchSubpage";
 
+const history = createBrowserHistory();
 
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path='/' component={ResultsTable} />
-      </Switch>
-    </BrowserRouter>
+    <div>
+
+
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/" component={ResultsTable} />
+          <Route path="/sport_event/:id" component={MatchSubpage} />
+        </Switch>
+      </Router>
+    </div>
   )
 }
 

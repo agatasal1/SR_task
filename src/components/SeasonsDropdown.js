@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import fetch from 'node-fetch';
 
+
+
+
 const targetUrl = 'https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=qjpvxc8hvtwyutz2vsk95qrt'
 
 function SeasonsDropdown({ setSeasonId }) {
@@ -22,7 +25,12 @@ function SeasonsDropdown({ setSeasonId }) {
 
     useEffect(() => {
         getData();
+
     }, [])
+
+    if (!dataSeasons) {
+        return
+    }
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value)
@@ -37,7 +45,11 @@ function SeasonsDropdown({ setSeasonId }) {
     }
     return (
 
-        <select onChange={handleChange} value={selectedOption}>
+        <select
+            onChange={handleChange}
+            value={selectedOption}
+            className='form-control'
+        >
             {dataSeasons.map((season) => {
                 return (
                     <option key={season.id} value={season.name}> {season.name}</option>
@@ -45,10 +57,6 @@ function SeasonsDropdown({ setSeasonId }) {
             })}
         </select>
     )
-
-
-
-
 }
 
 export default SeasonsDropdown;
